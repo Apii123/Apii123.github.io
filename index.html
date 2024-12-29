@@ -149,6 +149,7 @@
 
         // Loop untuk menambahkan gambar ke dalam gallery
         images.forEach(function(image_url) {
+            await sleep(2000);
             var galleryItem = $('<div class="gallery-item">');
             var imgElement = $('<img>').attr('src', image_url).attr('alt', 'Gambar');
             
@@ -159,6 +160,9 @@
         // Setelah semua gambar dimuat, sembunyikan loading
         $(".loading").hide();
     });
+    function sleep(ms){
+        return new Promise(resolve => setTimeout(resolve,ms));
+    }
 </script>
 
 </body>
