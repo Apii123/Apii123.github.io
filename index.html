@@ -54,7 +54,7 @@
 
 <script>
     // Pastikan kode hanya dijalankan setelah seluruh halaman dimuat (termasuk gambar dan stylesheet)
-    $(window).on('load', async function() {
+    $(window).on('load', function() {
         // Menampilkan loading saat gambar sedang dimuat
         $(".loading").show();
 
@@ -149,7 +149,7 @@
 
         // Loop untuk menambahkan gambar ke dalam gallery
         images.forEach(function(image_url) {
-            await sleep(2000);
+            //await sleep(2000);
             var galleryItem = $('<div class="gallery-item">');
             var imgElement = $('<img>').attr('src', image_url).attr('alt', 'Gambar');
             
