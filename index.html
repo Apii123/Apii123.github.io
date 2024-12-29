@@ -1,103 +1,165 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gallery API</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f0f0f0;
-    }
-    header {
-      background-color: #333;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
-    .gallery-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px;
-      padding: 20px;
-    }
-    .gallery-item {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      transition: transform 0.3s ease;
-    }
-    .gallery-item:hover {
-      transform: scale(1.05);
-    }
-    .gallery-item img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    .gallery-item p {
-      padding: 10px;
-      margin: 0;
-      background-color: #f5f5f5;
-      text-align: center;
-      font-size: 14px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery Gambar</title>
+    
+    <!-- CDN jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .gallery-container {
+           
+        }
+        .gallery-item {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .loading {
+            text-align: center;
+            font-size: 20px;
+            padding: 20px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
 
-  <header>
-    <h1>Gallery API</h1>
-    <p>Menampilkan gambar dari API</p>
-  </header>
+<header>
+</header>
 
-  <div class="gallery-container" id="gallery">
-    <!-- Gambar akan ditampilkan di sini -->
-  </div>
+<!-- Menampilkan Loading Animation -->
+<div class="loading">Memuat gambar...</div>
 
-  <script>
-    // Fungsi untuk mengambil data gambar dari API
-    async function fetchGalleryImages() {
-      try {
-        // URL API (misalnya JSONPlaceholder untuk gambar)
-        let url = 'https://e-hentai.org/g/3174828/5d0e55c2d6/';
-        const response = await fetch(url);
-        const data = await response.json();
+<!-- Kontainer untuk gambar -->
+<div class="gallery-container" id="gallery"></div>
 
-        // Ambil elemen gallery
-        const gallery = document.getElementById('gallery');
+<script>
+    // Pastikan kode hanya dijalankan setelah seluruh halaman dimuat (termasuk gambar dan stylesheet)
+    $(window).on('load', function() {
+        // Menampilkan loading saat gambar sedang dimuat
+        $(".loading").show();
 
-        // Loop melalui data dan buat elemen gambar
-        // data.forEach(item => {
-        //   const galleryItem = document.createElement('div');
-        //   galleryItem.classList.add('gallery-item');
+        //var proxyURL = "https://api.allorigins.win/get?url=";
+        // Array yang berisi URL gambar
+        var images = [
+            "https://whhumlx.ynhercsyslna.hath.network:1024/h/c407caa1dba7b6220bc6faa19c51bf1e4cb8f698-168412-832-1216-jpg/keystamp=1735474200-41283a30e3;fileindex=169744537;xres=org/88315TS6MEE4DMCKPVERKKPMV0.jpg", 
+"https://noiazhc.rjjhdjotqyvj.hath.network:45621/h/83c1a6967a09103bfa1903acde52ec6f636c0978-177161-832-1216-jpg/keystamp=1735474200-67d5dba679;fileindex=169744517;xres=org/0Z3KRGPZKP6QP9KTDS69MM8QZ0.jpg", 
+"https://qcexxdz.invemxmswpkb.hath.network/h/96260b19549a51b72c0ac9c0e2b712494cb78cd6-182514-832-1216-jpg/keystamp=1735474200-2e464bf703;fileindex=169744523;xres=org/03WSNXFHHH5J6F2B4XH3A9VPG0.jpg", 
+"https://ffgylsz.ubisfddzhvus.hath.network:1024/h/cac20b698bc8de23714948cc4f98563428d496d4-156682-832-1216-jpg/keystamp=1735474200-0d05662c4d;fileindex=169744525;xres=org/5DQGJ96M3MHHRBABPY4RKH1S50.jpg", 
+"https://npbwpqz.wiwwjmpkkgnb.hath.network/h/48465b1c84bc4d6e911e49f9849704c15f124e4a-187967-832-1216-jpg/keystamp=1735474200-f27a9d9d22;fileindex=169744531;xres=org/22FSZKNQACN9R97DR2BVQBBSD0.jpg", 
+"https://nyayjlu.kbddbfubfyhh.hath.network:60727/h/2224ee0bc6c8302c456ec0ad5b210f9a54e78294-180899-832-1216-jpg/keystamp=1735474200-edebf59b98;fileindex=169744547;xres=org/DT7GEJQB0Z6ZZYWNS4ZYFFR3Q0.jpg", 
+"https://vrqzifb.jzqkhxmxdwja.hath.network/h/ad36ee055de123e1a9058b504dc476cb8d3ab848-166788-832-1216-jpg/keystamp=1735474200-a6f4ec308a;fileindex=169744561;xres=org/PDYRAH45YQH76M356ANNAPW5K0.jpg", 
+"https://gwwtvlm.abfwcxkuhfml.hath.network/h/a1870fda664e5f784b2bfc7cf5f7f056dd271cab-225825-1216-832-jpg/keystamp=1735474200-183cdd8396;fileindex=169744527;xres=org/6T9VKDRJ5C1DVJ5GFSGKJBYSB0.jpg", 
+"https://mgipxxi.txtgdmmqvbha.hath.network:2010/h/5aeea8f9106c308e7870747b81cc3983781462b1-199369-1216-832-jpg/keystamp=1735474200-b1fb4cb09d;fileindex=169744582;xres=org/Z96QPJ62TV68ZSPPJTF15VDJ60.jpg", 
+"https://byzeplo.xlruwgtmrymr.hath.network:16240/h/ad1a521555a751ccf419b5ee7a59b4991b70a6d7-219097-1216-832-jpg/keystamp=1735474200-5633b42dbe;fileindex=169744578;xres=org/VBNDN0RB6FNNEA8MG2PCT32QA0.jpg", 
+"https://saafode.xyripmatozbt.hath.network:10443/h/b29daa8f5dedce3795a173f2fe8c2576ec05551f-239517-1216-832-jpg/keystamp=1735474200-de42488d56;fileindex=169744518;xres=org/1ESGWQBEY9JGPSC4QNQ1D7FFD0.jpg", 
+"https://uonhacq.xkywwqyuuftm.hath.network:8990/h/49032ccfb30f7669e8401f806c48d6e34f567a96-243137-1216-832-jpg/keystamp=1735474200-a8c242f5d9;fileindex=169744560;xres=org/PAWC92CN6NAX1ZBT26R6EBWJA0.jpg", 
+"https://yukupmv.zbsedtrrirww.hath.network/h/2018efd0b623cd2a36aa3de633cef725bc5fa996-226649-1216-832-jpg/keystamp=1735474200-e6cfcf4987;fileindex=169744536;xres=org/1768VMNN8WF5PZ1Y7ZH7D6FMK0.jpg",
+"https://kokeryk.dclrhflcrvev.hath.network:8444/h/602c5c7be50e7405c21dd46004c3d30497b4779f-230304-1216-832-jpg/keystamp=1735474200-0761bf34f8;fileindex=169744535;xres=org/832PZ0XWY1S9S3CNVA2X3MKHA0.jpg", 
+"https://dbkaric.xqkfygpmmfjc.hath.network/h/04f7cb91a918ea5cbd2490535b6d36431b845f41-199588-1216-832-jpg/keystamp=1735474200-3d49b3a1e0;fileindex=169744540;xres=org/B2D1Z9GHYS242HM8GD553R5YY0.jpg", 
+"https://gwtklum.wqretudrpukm.hath.network/h/bedf4ec483c8cb4d8556f5012a1779258b7c8415-264246-1216-832-jpg/keystamp=1735474200-00e5b2cda4;fileindex=169744583;xres=org/ZF9XE1RG45J1H6V45PSETF6VN0.jpg", 
+"https://nyayjlu.kbddbfubfyhh.hath.network:60727/h/90d5ca7e19392d925ecfa0f678f323aa539b4bd7-214197-1216-832-jpg/keystamp=1735474200-70e271d345;fileindex=169744556;xres=org/J0N9FPHWXHH4MCAQZZ9KQ0XYV0.jpg", 
+"https://wumbndo.lsqhozcbemvu.hath.network:51856/h/64cec55b7505b81295d03c072b2d857c7ceaa251-216779-1216-832-jpg/keystamp=1735474200-238dd9bc11;fileindex=169744575;xres=org/SYWB5S9DYVERFMB0A4RGKMQFQ0.jpg", 
+"https://higoelp.biktfdtphqry.hath.network:3369/h/a70eff77d7547a5caa1c15ccd4c4a4f7f7a4cd87-257031-1216-832-jpg/keystamp=1735474200-1304494ed9;fileindex=169744533;xres=org/036Q7FGRPFGSK9S26FJF6V4QR0.jpg", 
+"https://cddfkos.jzqkhxmxdwja.hath.network/h/f51877962867673d731b2b7b1954792db16f2a63-204691-1216-832-jpg/keystamp=1735474200-843db433b2;fileindex=169744562;xres=org/QDJF810966TQRZFTNAK29PGW70.jpg",
+"https://xbgbuct.wxtduhcggotg.hath.network:9001/h/d1275994c9b3591c48b10519074761f49a7b289b-227194-1216-832-jpg/keystamp=1735475100-42465825eb;fileindex=169744559;xres=org/NNMTPFN0STV0E2MJ2ADT50HZ60.jpg", 
+"https://cddfkos.jzqkhxmxdwja.hath.network/h/3f8132b847305a7fcd0490fccacf6709ebc4b5c7-222612-1216-832-jpg/keystamp=1735475100-4b3bf51b88;fileindex=169744553;xres=org/HW7R7SFGX7FRW3C27K8M5681K0.jpg", 
+"https://izokyaj.wfaaegmkctgt.hath.network:26514/h/7338254cbfbb611614574bede66084b6c0f5210f-218106-1216-832-jpg/keystamp=1735475100-bb0fb23b1e;fileindex=169744554;xres=org/HY6Z15Y227FXQ590MQH8WTHRB0.jpg",
+"https://wnskyop.jzqkhxmxdwja.hath.network/h/46187ac042bbd699ea5ec37682dfc9ad87c0cd44-207175-1216-832-jpg/keystamp=1735475100-468be7d121;fileindex=169744550;xres=org/GKY9TFDS8NAKDDPQKADC18YSC0.jpg", 
+"https://watreyb.moelliznpbbb.hath.network:6968/h/30b8d9184c4031137dfcdc9c94e7361a42fc55c9-237535-1216-832-jpg/keystamp=1735475100-f752c57ee9;fileindex=169792467;xres=org/7BJPDR65ZGQ1Z75VZ2BMF9GJN0.jpg", 
+"https://ddgdmew.sltedkhshbmk.hath.network:22587/h/ddc8f256b29670eba387c98fd7181c305c669444-237576-1216-832-jpg/keystamp=1735475100-edc1c2f96e;fileindex=169792468;xres=org/K9CQE17EJ7KN9NPE5FXRCECNT0.jpg", 
+"https://biyncrc.twmhfaetelrm.hath.network:61900/h/6e7cc66ffff2edd79a185570bdb6b9eefdb27fbe-246102-1216-832-jpg/keystamp=1735475100-0e9e771c36;fileindex=169792469;xres=org/BSSC7F5NWC103ZKACW4ZY8GHW0.jpg",
+"https://pkcvkdx.rklmqfgbdrfj.hath.network/h/69dc82c1521a4548cef540f15f88d5f8337e4b1e-243772-1216-832-jpg/keystamp=1735475100-61045af111;fileindex=169792470;xres=org/RTSFQAQ7JQ12C0N3Q0S0AYK030.jpg", 
+"https://qabglld.npmmrpremtmz.hath.network:7890/h/1a51d8ca8a3f5db5c878142cd662fbeb6294e5d5-237584-1216-832-jpg/keystamp=1735475100-94875d2ddb;fileindex=169792471;xres=org/4PACE8RX180WR317ECTR418D60.jpg", 
+"https://uonhacq.xkywwqyuuftm.hath.network:8990/h/f4addd65624e03d3cec6a1de5db9f21e78115763-241513-1216-832-jpg/keystamp=1735475400-c615bf64c9;fileindex=169792472;xres=org/5CNTWGSWE9P2T6RGCZGFC5CEJ0.jpg", 
+"https://ipgszut.cjyspgecaxwl.hath.network:20547/h/41942a63b978eb34790d2a0d7131dc6823646f7e-236596-1216-832-jpg/keystamp=1735475400-86e9c54bac;fileindex=169792473;xres=org/PTYJ118HBR6Z9PERPZ98FPMF20.jpg", 
+"https://nroaomz.xqkfygpmmfjc.hath.network/h/fb0d902117016c88fa2f569881936d48ae9a299e-213207-1216-832-jpg/keystamp=1735475400-a1773938a7;fileindex=169744521;xres=org/3HNDVX011XK5W2A1Q6Y5YQQTP0.jpg", 
+"https://pvucjls.wxtduhcggotg.hath.network/h/2960a4ff32425b8e5a442ad41e21eca0ee244d07-203080-1216-832-jpg/keystamp=1735475400-89d83116c2;fileindex=169792475;xres=org/66MHB1X9XWNPPJPXYQVJG254E0.jpg", 
+"https://lrwmpwz.rclavzfkkbiu.hath.network/h/bbcd2b9505060c2a3faba8e1ec918751c0ca14df-219822-1216-832-jpg/keystamp=1735475400-1bb6612b4d;fileindex=169792476;xres=org/AGKTZXP4MAVFDED507F47878T0.jpg", 
+"https://iqtsyod.soxggbzrmggj.hath.network:1100/h/887c24128e9e817937d97e93e284338d0655b3c7-202018-1216-832-jpg/keystamp=1735475400-a3f240a84e;fileindex=169792477;xres=org/AM2BRQF0B4FSGGWGSNTD53B6J0.jpg", 
+"https://jwdkwma.yonjbvqhtksh.hath.network:23333/h/a0a699c07adf27f8f23ac32446066a117f167c34-198801-1216-832-jpg/keystamp=1735475400-99ade704c1;fileindex=169792478;xres=org/EDREGN2J4JBHCKQT51BKTFVWW0.jpg", 
+"https://nlbqxwy.umgqbuujmrxh.hath.network:51100/h/43971866989ea3dd1e56b6a3495d8e7656c953e7-193371-1216-832-jpg/keystamp=1735475400-74e9d8ac80;fileindex=169792479;xres=org/H9S51QX9BBATGWRENTMWJ2E8B0.jpg", 
+"https://rmvsxpt.pojtjmrxlwhn.hath.network:2050/h/8eaebe0662f5a26f2751f1c0ae38b0255639e58b-213482-1216-832-jpg/keystamp=1735475400-d671f6c1fe;fileindex=169792480;xres=org/Q1W3KP2BBS5VPEF3W7GEQ49DD0.jpg", 
+"https://tvtbkav.barkhpjikzxi.hath.network:7181/h/a39334037e7aaf04e2efa8ac2c88b5b702acc682-235923-1216-832-jpg/keystamp=1735475400-ad15cb5cfb;fileindex=169792481;xres=org/QD584KHC1125SS7VF0JTNCH1W0.jpg", 
+"https://cktcvan.xvozlhpnbrbs.hath.network/h/1fd3cbd1c423788f5ac32df836b2218fb1da8470-230500-1216-832-jpg/keystamp=1735475700-c4b8ad3ed7;fileindex=169792482;xres=org/QXWC3KPMMT5PQRZ7SMNXSG3MS0.jpg",
+"https://lpgkvgd.wqretudrpukm.hath.network/h/49fccccc1c8c41a55ab7e2acc245fd430f6c1e48-243037-1216-832-jpg/keystamp=1735476000-c16f5ad92c;fileindex=169792483;xres=org/W444GY2ECDSEK0RN532X9907H0.jpg", 
+"https://wcvamfa.jzqkhxmxdwja.hath.network/h/fb88f215f3b9ef3a44b88a6b9413b49b726ef26e-230960-1216-832-jpg/keystamp=1735476000-5a65bcfd8c;fileindex=169792484;xres=org/XXK805C1Y7PFJWXAB63N072VB0.jpg", 
+"https://fnysbgh.myuakckxbiwz.hath.network/h/2dad11d4e48f295a1f9b312b83536581f5ac431c-202731-1216-832-jpg/keystamp=1735476000-777592222f;fileindex=169792485;xres=org/YVTGWX48PBJRG0MSJ2WS359290.jpg", 
+"https://xemmigj.kgqvqzpycumk.hath.network:62534/h/8224a52f9983a4936479056e2c8fc73bcb9ed254-206608-1216-832-jpg/keystamp=1735476000-bae91b27bd;fileindex=169792486;xres=org/Z1P5ZFE66BF9S3ABPF2YDAH6M0.jpg", 
+"https://cbogmux.rouukgephtdk.hath.network/h/5748ef61dbb02c85dd9a44ed1a6d4b1ce3db051d-199803-1216-832-jpg/keystamp=1735476000-a89b0578e1;fileindex=169792487;xres=org/3Z4923GZHFN68ZF8SANNFJMCH0.jpg",
+"https://ndpngnx.zejnhoozjwqr.hath.network/h/121c0f48bc97aac2f407dcc99f9ed58ee804ebe6-199984-1216-832-jpg/keystamp=1735476000-5d285edef5;fileindex=169792488;xres=org/VJYP9Z6RS0TFFPTWDJ3XMBEDM0.jpg", 
+"https://pkcvkdx.rklmqfgbdrfj.hath.network/h/497754b9a38ae1b30f18f86446f683186fa8e408-201332-1216-832-jpg/keystamp=1735476000-3bc19d0b72;fileindex=169792474;xres=org/RAK33TDHAE769XT7A7H261NCA0.jpg",
+"https://opdpkis.ntceyrmkvfii.hath.network:5654/h/56e9705bbd17be532d9c86aee62b09efd788d19e-214336-1216-832-jpg/keystamp=1735476000-523d701f28;fileindex=169744534;xres=org/78ARRGMNMVQ2C7RPDZ1EN30YD0.jpg", 
+"https://fgdxaei.ywxybskspour.hath.network:29977/h/7f12442049982ce3aa091e7b0f1b9558a6fdcaa4-204110-1216-832-jpg/keystamp=1735476000-d49651dec4;fileindex=169744542;xres=org/C5WCPQYCFCG0BNJE3MD9F3MBK0.jpg", 
+"https://ijzcwem.jtuuhxprymch.hath.network/h/a4814f4c390708a20d305576b4630e7815a3639a-199135-1216-832-jpg/keystamp=1735476000-6659a28aa1;fileindex=169744549;xres=org/GB4KA05YQ4CKQ4BS1Z6WKMHGB0.jpg", 
+"https://fffovlf.ttmhnihaiipn.hath.network:1024/h/37263d862d257d9fea5b4cd13b2b6c804586743f-254415-1216-832-jpg/keystamp=1735476000-f75e6b6da6;fileindex=169744565;xres=org/QSQH02VJ6G7QTQQKSWS3RFX2Y0.jpg", 
+"https://eodcqny.oywwxoakzsxf.hath.network:1044/h/2f08de06dfea590ffbe58fb686c9964fc5f08bdc-195409-1216-832-jpg/keystamp=1735476000-2fa8335bfc;fileindex=169744539;xres=org/AFW6PGTGX045ETKXXNJ4ZCHEQ0.jpg", 
+"https://gavsgbg.grpjjdhilull.hath.network/h/bbda41d1513b93edfd440188dac7fc5afe360163-212654-1216-832-jpg/keystamp=1735476000-5b63c4acd8;fileindex=169744548;xres=org/G2AWGWTT26ST8XC0AK1FHGTSC0.jpg",
+"https://zgmpgqw.avshjcgbnunx.hath.network:51464/h/4199a54ace9b7c85d95e7321b2bcf01441ba6ecf-215909-1216-832-jpg/keystamp=1735476000-cc1684e6cc;fileindex=169744568;xres=org/R9WVQE9Y2780H34YPKC1GW8860.jpg", 
+"https://vvakyuv.vnendkysxrdl.hath.network:33629/h/e2f76d0a28907fa4f2f2a2e6f2cce09dc0bc041e-206410-1216-832-jpg/keystamp=1735476000-23f6d00aa1;fileindex=169744577;xres=org/V2V2ZMN3QFW1ZC0H0KQZSWRVQ0.jpg", 
+"https://sphvhip.xqkfygpmmfjc.hath.network/h/db4634f849c0152a9759a5a746b3d7f90e5dcf55-213670-1216-832-jpg/keystamp=1735476000-4229b4c337;fileindex=169744522;xres=org/3RV2CKPS3FK9ZRX78G3APT2GV0.jpg", 
+"https://jskudyu.gigxwoeoxkgo.hath.network/h/c0a2ff66f2a3159876a6847a4c8ef06be752c9f5-219392-1216-832-jpg/keystamp=1735476000-d3c445eecc;fileindex=169744551;xres=org/GTS8ZYTW8TGKK7F8WB1WMQSM50.jpg", 
+"https://widakif.wxtduhcggotg.hath.network:9001/h/645e3f9f8d805623db1aa170805117012cf4526d-215269-1216-832-jpg/keystamp=1735476000-9ece56a5ff;fileindex=169744524;xres=org/4PAB6E3ZX6QV0BSK1327J84MB0.jpg", 
+"https://byzeplo.xlruwgtmrymr.hath.network:16240/h/e0c46eb3535d085bf792494af6c2c62c37d1e5d2-242456-1216-832-jpg/keystamp=1735476000-0716918f03;fileindex=169744570;xres=org/RVJDCX0FQSB8XJN55J0S8T5J40.jpg", 
+"https://apsqnbr.eyyqmjzhlpym.hath.network/h/b69497788ef62dcd7108e994546312b1e891cccc-219056-1216-832-jpg/keystamp=1735476000-056f44849b;fileindex=169744564;xres=org/QJKM1RWFWPAMHRW2N30ZXN48R0.jpg", 
+"https://skmuxxq.wncyfaxaamap.hath.network:49737/h/6d4004cea0ee6af1e6fad1b3c492becf93451a20-213679-1216-832-jpg/keystamp=1735476300-db8cd6d043;fileindex=169744526;xres=org/6Q2N451BYET1QC4H07KN4TTVD0.jpg", 
+"https://mjeyydn.glokyygwozpy.hath.network:5003/h/d14b31ebb4b110329c9e5ff5fd833deb5f77b2c6-207071-1216-832-jpg/keystamp=1735476300-d7c5da0bb5;fileindex=169744581;xres=org/Z7SNF6DS503M92S12DDPE6K140.jpg", 
+"https://nlbqxwy.umgqbuujmrxh.hath.network:51100/h/438aecc1da1f1c52efbadb4fd6c9de8cc8389a4f-203150-1216-832-jpg/keystamp=1735476300-bbc7520cd8;fileindex=169744574;xres=org/SPS419N6APS76JBR5YADAR9PA0.jpg", 
+"https://sctkmga.wzzkqhqjozps.hath.network:25850/h/7db6da9bcfaea880186f3bd08b8c8fca97995a4b-206886-1216-832-jpg/keystamp=1735476300-91c1df6c8a;fileindex=169744572;xres=org/SDKY6S61RBMQAQ67S9M15BGMW0.jpg", 
+"https://gerwwps.ntxkorfllgnx.hath.network/h/f6c7b58f60ba8509a76181958988d0767fe9989d-252741-1216-832-jpg/keystamp=1735476300-6ef02d1ed3;fileindex=169744530;xres=org/10PB0ART26Q67465NXG4P844J0.jpg", 
+"https://wiktxcn.dftiqonzdlys.hath.network/h/594351638feaa827c8cb04fba52f53e569ebdb77-235333-1216-832-jpg/keystamp=1735476300-2e5bdc58c2;fileindex=169744576;xres=org/T4933QVW9D0KM04AZ0Q46AH0R0.jpg", 
+"https://gavsgbg.grpjjdhilull.hath.network/h/bd1e4a4b851897ce352f7ddd5276ee95183c120c-211864-1216-832-jpg/keystamp=1735476300-1fd669521c;fileindex=169744532;xres=org/30ZTVZ5WEESQQJ5R7VDRGN1G50.jpg", 
+"https://niuvhbu.suubiyxxnkph.hath.network:2450/h/306334e41943514ea8d7e573762d43c4f121f45d-192608-832-1216-jpg/keystamp=1735476300-473e5d4305;fileindex=169744528;xres=org/9AY2AC4ND0S9NQTVDDCRD5B3B0.jpg", 
+"https://ihlmfgg.mwqjburwhkbh.hath.network/h/63720695e9f6e5b337a3bdc714b7db80f13a98f2-196093-832-1216-jpg/keystamp=1735476300-3d0dd47544;fileindex=169744519;xres=org/2HJJ6207PG55YKN0NVTCR93TG0.jpg", 
+"https://mxvjfal.gigxwoeoxkgo.hath.network/h/80c0b928d3ac4b39d0b8d77fab2f4b57716b96f2-208235-832-1216-jpg/keystamp=1735476300-6508034954;fileindex=169744543;xres=org/C8N1JAMFFPY5903GYPNSTTMBB0.jpg", 
+"https://jnappdz.yiovnlnqlkio.hath.network/h/1ba43e24317cfa81d01c74c1ebf9abca92b69ffb-210574-832-1216-jpg/keystamp=1735476300-974167848f;fileindex=169744544;xres=org/C35Z6CDYKA8BR16BAG00ANTWG0.jpg", 
+"https://vrqzifb.jzqkhxmxdwja.hath.network/h/7e321ec1d9f25ed78f3f3091fb1cf0ad2fe79d80-190905-832-1216-jpg/keystamp=1735476300-189e1f244d;fileindex=169744545;xres=org/C85A360QA8XKGV8MB0N4PFS2Z0.jpg", 
+"https://nroaomz.xqkfygpmmfjc.hath.network/h/431e43d380a24fa0677acd3e87774b21746dee77-190537-832-1216-jpg/keystamp=1735476300-0744fc5923;fileindex=169744569;xres=org/RKGA1C22YDP1BHG79BJDN452Y0.jpg", 
+"https://umuolrd.wxtduhcggotg.hath.network/h/483c452ede09956ed6e7566075b4c44dc3604f48-188548-832-1216-jpg/keystamp=1735476300-5071256ebd;fileindex=169744573;xres=org/SGHX1JGGYDYHSMZVSK0NKSQ160.jpg", 
+"https://xbgbuct.wxtduhcggotg.hath.network:9001/h/0c46797e5665574b7a55481eefb6a933bcfc6162-216438-832-1216-jpg/keystamp=1735476300-63f0143eb9;fileindex=169744516;xres=org/0NWZZCCW6FCWQMN3D28RY2D4Z0.jpg", 
+"https://nlbqxwy.umgqbuujmrxh.hath.network:51100/h/fef2c718fe48875d4ce2cddca2dc46fc05a2b94f-198561-832-1216-jpg/keystamp=1735476300-f55f17dcfb;fileindex=169744567;xres=org/R4QZGB340C4CCCKQM654YVJ560.jpg", 
+"https://doikskb.enqzeuznuecb.hath.network:31512/h/30b04c9ede62ea9c45f9268dd52df7425b8a96de-203183-832-1216-jpg/keystamp=1735476300-66e47e14ec;fileindex=169744541;xres=org/BG6B1D1Q26BZHA3J7NMTVD0E70.jpg", 
+"https://yukupmv.zbsedtrrirww.hath.network/h/2a00424d36e030f30a5b575b1db064c6c2285cfa-188130-832-1216-jpg/keystamp=1735476300-5b71b7222a;fileindex=169744566;xres=org/R1CXT949FV5HKRNBJFYSPERXK0.jpg", 
+"https://rlwkbjs.uudfdgekiaqj.hath.network/h/1c4250a54015aa20fb106f533e7b84697084f527-207128-832-1216-jpg/keystamp=1735476300-56027bc1d8;fileindex=169744552;xres=org/HAHR63648NY0JZ89XTQTV7ACX0.jpg", 
+"https://szfciox.fdzdpdypsfak.hath.network:25500/h/909b28e62993950e35a8e53e99fb0aeaea1dbc97-197636-832-1216-jpg/keystamp=1735476600-7aaced8e39;fileindex=169744558;xres=org/NFZYBWWEC41QG1XE0Q2GV5ZXH0.jpg", 
+"https://dofrapf.iukqmjrvshzl.hath.network/h/9868c167f3fe8b7176f3b804772d77354d6ce8cd-212997-832-1216-jpg/keystamp=1735476300-7ca9a6a611;fileindex=169744579;xres=org/WPCWGHZJHTFYSXBHZ9YY93N9V0.jpg", 
+"https://ipnbise.hrkbghupdvis.hath.network:8080/h/f4a48c200eb909e2c5daa2e2d073b1a51c1f9b52-200184-832-1216-jpg/keystamp=1735476300-b8332e540e;fileindex=169744557;xres=org/M1SSPTPAACEC4NHE6YWYY8FNC0.jpg", 
+  
 
-        //   galleryItem.innerHTML = `
-        //     <img src="${item.url}" alt="${item.title}">
-        //   `;
-          for(let a = 0;a < parseInt(data.filecount);a++){
-            const galleryItem = document.createElement('div');
-          galleryItem.classList.add('gallery-item');
+        ];
 
-          galleryItem.innerHTML = `
-            <img src="${url}-${a}">
-          `
-          }
-
-          // Tambahkan item gambar ke dalam gallery
-          gallery.appendChild(galleryItem);
+        // Loop untuk menambahkan gambar ke dalam gallery
+        images.forEach(function(image_url) {
+            var galleryItem = $('<div class="gallery-item">');
+            var imgElement = $('<img>').attr('src', image_url).attr('alt', 'Gambar');
+            
+            galleryItem.append(imgElement);
+            $('#gallery').append(galleryItem);
         });
-      } catch (error) {
-        console.error('Error fetching images:', error);
-      }
-    }
 
-    // Panggil fungsi fetchGalleryImages saat halaman dimuat
-    window.onload = fetchGalleryImages;
-  </script>
+        // Setelah semua gambar dimuat, sembunyikan loading
+        $(".loading").hide();
+    });
+</script>
 
 </body>
 </html>
