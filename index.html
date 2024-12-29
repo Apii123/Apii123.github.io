@@ -77,12 +77,12 @@
         //   galleryItem.innerHTML = `
         //     <img src="${item.url}" alt="${item.title}">
         //   `;
-          for(let a = 0;a < data.filecount;a++){
+          for(let a = 0;a < parseInt(data.filecount);a++){
             const galleryItem = document.createElement('div');
           galleryItem.classList.add('gallery-item');
 
           galleryItem.innerHTML = `
-            <img src="${data.url+'-'+a}">
+            <img src="${data.url}-${a}">
           `
           }
 
