@@ -16,7 +16,10 @@
             background-color: #f0f0f0;
         }
         .gallery-container {
-           
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            padding: 20px;
         }
         .gallery-item {
             background-color: white;
@@ -53,12 +56,10 @@
 <div class="gallery-container" id="gallery"></div>
 
 <script>
-    // Pastikan kode hanya dijalankan setelah seluruh halaman dimuat (termasuk gambar dan stylesheet)
     $(window).on('load', function() {
         // Menampilkan loading saat gambar sedang dimuat
         $(".loading").show();
 
-        //var proxyURL = "https://api.allorigins.win/get?url=";
         // Array yang berisi URL gambar
         var images = [
             "https://whhumlx.ynhercsyslna.hath.network:1024/h/c407caa1dba7b6220bc6faa19c51bf1e4cb8f698-168412-832-1216-jpg/keystamp=1735474200-41283a30e3;fileindex=169744537;xres=org/88315TS6MEE4DMCKPVERKKPMV0.jpg", 
@@ -142,27 +143,21 @@
 "https://rlwkbjs.uudfdgekiaqj.hath.network/h/1c4250a54015aa20fb106f533e7b84697084f527-207128-832-1216-jpg/keystamp=1735476300-56027bc1d8;fileindex=169744552;xres=org/HAHR63648NY0JZ89XTQTV7ACX0.jpg", 
 "https://szfciox.fdzdpdypsfak.hath.network:25500/h/909b28e62993950e35a8e53e99fb0aeaea1dbc97-197636-832-1216-jpg/keystamp=1735476600-7aaced8e39;fileindex=169744558;xres=org/NFZYBWWEC41QG1XE0Q2GV5ZXH0.jpg", 
 "https://dofrapf.iukqmjrvshzl.hath.network/h/9868c167f3fe8b7176f3b804772d77354d6ce8cd-212997-832-1216-jpg/keystamp=1735476300-7ca9a6a611;fileindex=169744579;xres=org/WPCWGHZJHTFYSXBHZ9YY93N9V0.jpg", 
-"https://ipnbise.hrkbghupdvis.hath.network:8080/h/f4a48c200eb909e2c5daa2e2d073b1a51c1f9b52-200184-832-1216-jpg/keystamp=1735476300-b8332e540e;fileindex=169744557;xres=org/M1SSPTPAACEC4NHE6YWYY8FNC0.jpg", 
-  
-
+"https://ipnbise.hrkbghupdvis.hath.network:8080/h/f4a48c200eb909e2c5daa2e2d073b1a51c1f9b52-200184-832-1216-jpg/keystamp=1735476300-b8332e540e;fileindex=169744557;xres=org/M1SSPTPAACEC4NHE6YWYY8FNC0.jpg",
         ];
 
-        // Loop untuk menambahkan gambar ke dalam gallery
-        images.forEach(function(image_url) {
-            //await sleep(2000);
-            var galleryItem = $('<div class="gallery-item">');
-            var imgElement = $('<img>').attr('src', image_url).attr('alt', 'Gambar');
-            
-            galleryItem.append(imgElement);
-            $('#gallery').append(galleryItem);
+        // Menyembunyikan loading setelah gambar dimuat
+        var gallery = $("#gallery");
+
+        // Loop untuk setiap gambar dan menambahkan ke dalam galeri
+        images.forEach(function(url) {
+            var imgElement = $('<div class="gallery-item"><img src="' + url + '" alt="Gambar"></div>');
+            gallery.append(imgElement);
         });
 
-        // Setelah semua gambar dimuat, sembunyikan loading
+        // Menyembunyikan loading setelah gambar dimuat
         $(".loading").hide();
     });
-    function sleep(ms){
-        return new Promise(resolve => setTimeout(resolve,ms));
-    }
 </script>
 
 </body>
