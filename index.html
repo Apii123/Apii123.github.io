@@ -9,38 +9,22 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-        }
-        .gallery-container {
+        /* Kontainer grid */
+        #gallery-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 16px;
             padding: 20px;
         }
-        .gallery-item {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-        .gallery-item:hover {
-            transform: scale(1.05);
-        }
-        .gallery-item img {
+
+        /* Gambar dalam galeri */
+        #gallery-container img {
             width: 100%;
             height: auto;
-            display: block;
-        }
-        .loading {
-            text-align: center;
-            font-size: 20px;
-            padding: 20px;
-            display: none;
+            object-fit: cover;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
     </style>
 </head>
@@ -53,16 +37,46 @@
 <div class="loading">Memuat gambar...</div>
 
 <!-- Kontainer untuk gambar -->
-<div class="gallery-container" id="gallery"></div>
+<div class="gallery-container" id="gallery-container"></div>
 
 <script>
-    $(window).on('load', function() {
-        // Menampilkan loading saat gambar sedang dimuat
-        $(".loading").show();
+// Fungsi untuk tidur (delay) selama ms milidetik
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-        // Array yang berisi URL gambar
-        var images = [
-            "https://whhumlx.ynhercsyslna.hath.network:1024/h/c407caa1dba7b6220bc6faa19c51bf1e4cb8f698-168412-832-1216-jpg/keystamp=1735474200-41283a30e3;fileindex=169744537;xres=org/88315TS6MEE4DMCKPVERKKPMV0.jpg", 
+// Fungsi untuk memuat gambar secara bertahap dengan delay
+async function loadImagesWithDelay(imageUrls) {
+    const galleryContainer = document.getElementById("gallery-container");
+    
+    // Buat grid terlebih dahulu untuk menyiapkan ruang gambar
+    for (let i = 0; i < imageUrls.length; i++) {
+        // Membuat elemen gambar
+        const imgElement = document.createElement("img");
+        imgElement.src = imageUrls[i];
+        imgElement.alt = `Image ${i + 1}`;
+
+        // Menambahkan gambar ke dalam kontainer galeri (tetapi tidak tampil dulu)
+        galleryContainer.appendChild(imgElement);
+    }
+
+    // Menunggu 2 detik sebelum menampilkan setiap gambar satu per satu
+    for (let i = 0; i < imageUrls.length; i++) {
+        const imgElement = galleryContainer.children[i];
+
+        // Mengubah opasitas gambar menjadi 1 untuk membuat gambar muncul
+        setTimeout(() => {
+            imgElement.style.opacity = 1;
+        }, 2000 * i); // Menunggu 2 detik untuk setiap gambar
+
+        // Menunggu sebelum melanjutkan ke gambar berikutnya
+        await sleep(250);
+    }
+}
+
+// Contoh array URL gambar (gantilah dengan URL gambar Anda)
+const imageUrls = [
+    "https://whhumlx.ynhercsyslna.hath.network:1024/h/c407caa1dba7b6220bc6faa19c51bf1e4cb8f698-168412-832-1216-jpg/keystamp=1735474200-41283a30e3;fileindex=169744537;xres=org/88315TS6MEE4DMCKPVERKKPMV0.jpg", 
 "https://noiazhc.rjjhdjotqyvj.hath.network:45621/h/83c1a6967a09103bfa1903acde52ec6f636c0978-177161-832-1216-jpg/keystamp=1735474200-67d5dba679;fileindex=169744517;xres=org/0Z3KRGPZKP6QP9KTDS69MM8QZ0.jpg", 
 "https://qcexxdz.invemxmswpkb.hath.network/h/96260b19549a51b72c0ac9c0e2b712494cb78cd6-182514-832-1216-jpg/keystamp=1735474200-2e464bf703;fileindex=169744523;xres=org/03WSNXFHHH5J6F2B4XH3A9VPG0.jpg", 
 "https://ffgylsz.ubisfddzhvus.hath.network:1024/h/cac20b698bc8de23714948cc4f98563428d496d4-156682-832-1216-jpg/keystamp=1735474200-0d05662c4d;fileindex=169744525;xres=org/5DQGJ96M3MHHRBABPY4RKH1S50.jpg", 
@@ -144,21 +158,13 @@
 "https://szfciox.fdzdpdypsfak.hath.network:25500/h/909b28e62993950e35a8e53e99fb0aeaea1dbc97-197636-832-1216-jpg/keystamp=1735476600-7aaced8e39;fileindex=169744558;xres=org/NFZYBWWEC41QG1XE0Q2GV5ZXH0.jpg", 
 "https://dofrapf.iukqmjrvshzl.hath.network/h/9868c167f3fe8b7176f3b804772d77354d6ce8cd-212997-832-1216-jpg/keystamp=1735476300-7ca9a6a611;fileindex=169744579;xres=org/WPCWGHZJHTFYSXBHZ9YY93N9V0.jpg", 
 "https://ipnbise.hrkbghupdvis.hath.network:8080/h/f4a48c200eb909e2c5daa2e2d073b1a51c1f9b52-200184-832-1216-jpg/keystamp=1735476300-b8332e540e;fileindex=169744557;xres=org/M1SSPTPAACEC4NHE6YWYY8FNC0.jpg",
-        ];
+];
 
-        // Menyembunyikan loading setelah gambar dimuat
-        var gallery = $("#gallery");
+// Memanggil fungsi untuk memuat gambar
+loadImagesWithDelay(imageUrls);
 
-        // Loop untuk setiap gambar dan menambahkan ke dalam galeri
-        images.forEach(function(url) {
-            var imgElement = $('<div class="gallery-item"><img src="' + url + '" alt="Gambar"></div>');
-            gallery.append(imgElement);
-        });
-
-        // Menyembunyikan loading setelah gambar dimuat
-        $(".loading").hide();
-    });
 </script>
 
 </body>
 </html>
+
