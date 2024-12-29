@@ -63,7 +63,8 @@
     async function fetchGalleryImages() {
       try {
         // URL API (misalnya JSONPlaceholder untuk gambar)
-        const response = await fetch('https://e-hentai.org/g/3174828/5d0e55c2d6/');
+        let url = 'https://e-hentai.org/g/3174828/5d0e55c2d6/';
+        const response = await fetch(url);
         const data = await response.json();
 
         // Ambil elemen gallery
@@ -82,7 +83,7 @@
           galleryItem.classList.add('gallery-item');
 
           galleryItem.innerHTML = `
-            <img src="${data.url}-${a}">
+            <img src="${url}-${a}">
           `
           }
 
